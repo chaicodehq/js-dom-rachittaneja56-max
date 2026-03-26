@@ -88,28 +88,73 @@
  */
 export function findQueueContainer(element) {
   // Your code here
+  if (!element) return null
+  const ans = element.closest('.queue-container')
+  if (ans) return ans
+  else return null
+
 }
 
 export function getNextInQueue(element) {
   // Your code here
+  if (!element) return null
+  const ans = element.nextElementSibling
+  if (ans) return ans
+  else return null
+
 }
 
 export function getPreviousInQueue(element) {
   // Your code here
+  if (!element) return null
+  const ans = element.previousElementSibling
+  if (ans) return ans
+  else return null
 }
 
 export function getQueuePosition(element) {
   // Your code here
+  if (!element) return -1;
+  const parent = element.parentNode;
+  if (!parent) return -1;
+  const siblings = Array.from(parent.children);
+  const index = siblings.indexOf(element);
+  return index !== -1 ? index + 1 : -1;
 }
 
 export function moveToFront(element) {
   // Your code here
+  if (!element) return false;
+  const parent = element.parentNode;
+  if (!parent) return false;
+
+  if (parent.firstElementChild === element) {
+    return false;
+  }
+
+  parent.insertBefore(element, parent.firstChild);
+  return true;
+
 }
 
 export function removeFromQueue(element) {
   // Your code here
+  if (!element) return null
+  const parent = element.parentNode;
+  if (!parent) return null;
+  const ans = parent.removeChild(element)
+  return ans
 }
 
 export function getQueueStats(queueContainer) {
   // Your code here
+  if (!queueContainer) return null;
+
+  const autos = Array.from(queueContainer.children);
+  return {
+    total: autos.length,
+    waiting: autos.filter(auto => auto.classList.contains('waiting')).length,
+    serving: autos.filter(auto => auto.classList.contains('serving')).length,
+    completed: autos.filter(auto => auto.classList.contains('completed')).length
+  };
 }

@@ -70,25 +70,60 @@
  *   // => ["red", "blue"]
  */
 export function addColors(element, ...colors) {
-  // Your code here
+    if(!element) return -1
+    let addedCount = 0;
+    const color_set = new Set(colors)
+    const color_array = [...color_set]
+    color_array.forEach(color => {
+        if (!element.classList.contains(color)) {
+            element.classList.add(color);
+            addedCount++;
+        }
+    });
+
+    return addedCount;
 }
 
 export function removeColors(element, ...colors) {
-  // Your code here
+    if(!element) return -1
+    let removedCount = 0;
+    const color_set = new Set(colors)
+    const color_array = [...color_set]
+    color_array.forEach(color => {
+        if (element.classList.contains(color)) {
+            element.classList.remove(color);
+             removedCount++;
+        }
+    });
+
+    return removedCount;
 }
 
 export function togglePattern(element, pattern) {
-  // Your code here
+    if (!element) return null
+    return element.classList.toggle(`pattern-${pattern}`)
 }
 
 export function hasDesign(element, designName) {
-  // Your code here
+   if (!element) return false;
+   return element.classList.contains(`design-${designName}`)
+
 }
 
 export function replaceDesign(element, oldDesign, newDesign) {
-  // Your code here
+  if (!element) return false;
+  if(!element.classList.contains(`design-${oldDesign}`)) {
+    element.classList.add(`design-${newDesign}`)
+    return false
+  }
+  element.classList.remove(`design-${oldDesign}`)
+  element.classList.add(`design-${newDesign}`)
+  return true
 }
 
 export function getActiveColors(element) {
-  // Your code here
+  if (!element) return [];
+  return Array.from(element.classList)
+        .filter(ele => ele.startsWith("color-"))
+        .map(ele=> ele.replace("color-",""))
 }

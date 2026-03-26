@@ -79,21 +79,85 @@
  *   // => 1 (only red kites shown)
  */
 export function renderKiteCard(kite) {
-  // Your code here
+  if (!kite || !kite.name || !kite.color || !kite.size || !kite.maker || !kite.image) return null
+
+  const kiteDiv = document.createElement('div')
+  kiteDiv.classList.add('kite-card')
+
+  const imageKite = document.createElement('img')
+  imageKite.setAttribute('src', kite.image)
+  imageKite.setAttribute('alt', kite.name)
+  kiteDiv.appendChild(imageKite)
+  
+  const h3Kite = document.createElement('h3')
+  h3Kite.classList.add('kite-name')
+  h3Kite.textContent = kite.name
+  kiteDiv.appendChild(h3Kite)
+  
+  const pKite = document.createElement('p')
+  pKite.classList.add('kite-maker')
+  pKite.textContent = `by ${kite.maker}`
+  kiteDiv.appendChild(pKite)
+  
+  const pKiteInfo = document.createElement('p')
+  pKiteInfo.classList.add('kite-info')
+  pKiteInfo.textContent = `${kite.size} - ${kite.color}`
+  kiteDiv.appendChild(pKiteInfo)
+  
+  return kiteDiv
 }
 
 export function renderGallery(container, kites) {
-  // Your code here
-}
+if (!container || !Array.isArray(kites) || kites.length == 0) return -1
+
+  container.innerHTML = ""
+  let count = 0
+  kites.forEach(element => {
+    if (!element || renderKiteCard(element) === null) {
+      
+    } else {
+      const child = renderKiteCard(element)
+      container.appendChild(child)
+      count++
+    }
+  });
+
+  return count}
 
 export function filterKites(container, kites, filterFn) {
-  // Your code here
+   if (!container || !Array.isArray(kites) || typeof filterFn !== 'function') {
+    return -1;
+  }
+  const filterKites = kites.filter(filterFn)
+  return renderGallery(container,filterKites)
 }
 
 export function sortAndRender(container, kites, sortField, order) {
-  // Your code here
+    if (!container || !Array.isArray(kites) || kites.length == 0) return []
+
+  const copyKites = [...kites]
+  
+  if (order === 'desc') {
+    copyKites.sort()
+    copyKites.reverse()
+  } else {
+    copyKites.sort()
+  }
+  renderGallery(container, copyKites)
+  return copyKites
 }
 
+
 export function renderEmptyState(container, message) {
-  // Your code here
+    if (!container) return false
+
+  if (container.children.length === 0) {
+    const pES = document.createElement('p')
+    pES.classList.add('empty-state')
+    pES.textContent = message
+    container.appendChild(pES)
+    return true
+  } else {
+    return false
+  }
 }

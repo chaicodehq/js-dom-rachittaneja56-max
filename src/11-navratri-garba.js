@@ -90,24 +90,68 @@
  */
 export function insertDancer(stage, newDancer, referenceDancer) {
   // Your code here
+  if (!stage || !newDancer) return false
+  if (!referenceDancer) {
+    stage.appendChild(newDancer)
+    return true
+  } else {
+    stage.insertBefore(newDancer, referenceDancer)
+    return true
+  }
 }
 
 export function cloneDancer(dancer, deep) {
   // Your code here
+  if (!dancer) return null
+  const newDancer = dancer.cloneNode(deep)
+  if (!newDancer.id) {
+    return newDancer
+  } else {
+    newDancer.id = newDancer.id + "-copy"
+    return newDancer
+  }
 }
 
 export function replaceDancer(stage, oldDancer, newDancer) {
   // Your code here
+  if (!stage || !newDancer || !oldDancer) return null
+  stage.replaceChild(newDancer, oldDancer)
+  return oldDancer
 }
 
 export function removeDancer(stage, dancer) {
   // Your code here
+  if (!stage || !dancer) return null
+  if (!stage.contains(dancer)) return null
+  stage.removeChild(dancer)
+  return dancer
 }
 
 export function rearrangeStage(stage, order) {
   // Your code here
+  if (!stage || !Array.isArray(order)) return false;
+  const dancersArr = Array.from(stage.children);
+  if (order.length !== dancersArr.length) return false;
+
+  const invalid = order.some(index => 
+    typeof index !== 'number' || index < 0 || index >= dancersArr.length
+  );
+  if (invalid) return false;
+
+  while (stage.firstChild) {
+    stage.removeChild(stage.firstChild);
+  }
+  order.forEach(index => {
+    stage.appendChild(dancersArr[index]);
+  });
+
+  return true;
 }
 
 export function duplicateFormation(stage) {
   // Your code here
+  if (!stage) return null
+  const clone = stage.cloneNode(true)
+  clone.id = clone.id + "-clone"
+  return clone
 }
